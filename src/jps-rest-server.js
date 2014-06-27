@@ -7,62 +7,65 @@
  * Licensed under the MIT license.
  */
 (function (exports) {
+//Setup dependencies
+	var express = require('express'),
+		bodyParser = require('body-parser'),
+		events = require('events'),
+		utils = require('util');
 
 	'use strict';
-	exports.RestServer = function () {
-
-		//Setup dependencies
-		var express = require('express'),
-			bodyParser = require('body-parser'),
-			events = require('events'),
-			utils = require('util'),
-			server = express();
+	var RestServer = function (options) {
+		var self = this;
+			self.server = express();
 
 
-		//Make server inherit all of EventEmitter properties/methods
-		utils.inherits(server, events.EventEmitter);
 
 		//Configure server
-		server.use(bodyParser.json());
-		server.use(express.static(__dirname + '/'));
-		server.use(function (req, res, next) {
+		self.server.use(bodyParser.json());
+		self.server.use(express.static(__dirname + '/'));
+		self.server.use(function (req, res, next) {
 			console.log('%s %s', req.method, req.url);
 			next();
 		});
 
 		/*Base*/
-		server.get('/api', function (req, res) {
+		self.server.get('/api', function (req, res) {
+			self.emit('index', {message: 'RESTful Node API Server'});
 			res.json({message: 'RESTful Node API Server'});
 		});
 
 		/*Query*/
-		server.get('/api/:table', function (req, res) {
+		self.server.get('/api/:table', function (req, res) {
 			res.json({ message: 'Query items in ' + req.params.table });
 		});
 
 		/* CRUD Operations */
 
 		/* Create */
-		server.post('/api/:table', function (req, res) {
+		self.server.post('/api/:table', function (req, res) {
 			res.json({ message: 'Create item in ' + req.params.table });
 		});
 
 		/* Read */
-		server.get('/api/:table/:id?', function (req, res) {
+		self.server.get('/api/:table/:id?', function (req, res) {
 			res.json({message: 'Read item ' + req.params.id + ' in ' + req.params.table});
 		});
 
 		/* Update */
-		server.put('/api/:table/:id', function (req, res) {
+		self.server.put('/api/:table/:id', function (req, res) {
 			res.json({message: 'Update item ' + req.params.id + ' in ' + req.params.table});
 		});
 
 		/* Delete */
-		server.delete('/api/:table/:id', function (req, res) {
+		self.server.delete('/api/:table/:id', function (req, res) {
 			res.json({message: 'Delete item ' + req.params.id + ' in ' + req.params.table});
 		});
 
-		return server;
+		return self.server;
+
+		//Make server inherit all of EventEmitter properties/methods
+		utils.inherits(self, events.EventEmitter);
 	};
+	exports.RestServer = RestServer;
 
 }(typeof exports === 'object' && exports || this));
