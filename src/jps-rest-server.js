@@ -15,7 +15,7 @@
 		var express = require('express'),
 			bodyParser = require('body-parser'),
 			events = require('events'),
-			utils = require('utils'),
+			utils = require('util'),
 			server = express();
 
 
