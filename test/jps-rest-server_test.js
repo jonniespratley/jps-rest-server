@@ -1,18 +1,21 @@
+/* global exports, require */
 'use strict';
-var request = require( 'request' );
-//var RestServer = require('../lib/rest-server.js').RestServer;
+var request = require( 'request'),
+	RestServer = require('../src/jps-rest-server.js').RestServer;
 
 /**
  * If server is not running use this to start server before tests.
- var mockServer = null;
- mockServer = new RestServer();
- mockServer.listen(9090);
  */
+ var mockServer = null;
+    mockServer = new RestServer();
+    mockServer.listen(9090);
 
-var endpoint = 'http://localhost:9090';
-var expected = {
-	message: 'RESTful Node API Server'
-};
+
+var endpoint = 'http://localhost:9090',
+	expected = {
+		message: 'RESTful Node API Server'
+	};
+
 //Actuall Tests
 exports.RestServer = {
 	setUp: function (done) {
@@ -49,7 +52,7 @@ exports.RestServer = {
 	},
 	'POST /api/posts': function (test) {
 		expected.message = 'Create item in posts';
-
+		test.done();
 	},
 	'PUT /api/posts/1': function (test) {
 		expected.message = 'Update item 1 in posts';
