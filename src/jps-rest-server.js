@@ -6,18 +6,24 @@
  * Copyright (c) 2014 Jonnie Spratley
  * Licensed under the MIT license.
  */
-(function (exports) {
-//Setup dependencies
-	var express = require('express'),
+ var express = require('express'),
 		bodyParser = require('body-parser'),
 		events = require('events'),
 		utils = require('util');
 
+
+(function (exports) {
 	'use strict';
-	var RestServer = function (options) {
+	//Setup dependencies
+	
+	exports.RestServer = function (options) {
 		var self = this;
 			self.server = express();
 
+
+		
+		
+		
 
 
 		//Configure server
@@ -62,10 +68,8 @@
 		});
 
 		return self.server;
-
-		//Make server inherit all of EventEmitter properties/methods
-		utils.inherits(self, events.EventEmitter);
 	};
-	exports.RestServer = RestServer;
-
+	//Make server inherit all of EventEmitter properties/methods
+		utils.inherits(exports.RestServer, events.EventEmitter);
+	
 }(typeof exports === 'object' && exports || this));
